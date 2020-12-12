@@ -34,6 +34,7 @@ namespace PluralKit.Bot
             builder.RegisterType<Autoproxy>().AsSelf();
             builder.RegisterType<Groups>().AsSelf();
             builder.RegisterType<Help>().AsSelf();
+			builder.RegisterType<GetStarted>().AsSelf();
             builder.RegisterType<ImportExport>().AsSelf();
             builder.RegisterType<Member>().AsSelf();
             builder.RegisterType<MemberAvatar>().AsSelf();

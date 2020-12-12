@@ -32,6 +32,7 @@ namespace PluralKit.Bot
         public static Command Autoproxy = new Command("autoproxy", "autoproxy [off|front|latch|member]", "Sets your system's autoproxy mode for this server");
         public static Command MemberInfo = new Command("member", "member <member>", "Looks up information about a member");
         public static Command MemberNew = new Command("member new", "member new <name>", "Creates a new member");
+		public static Command ProxyHelp = new Command ("new", "proxyhelp", "Gives an Introduction to Proxying.");
         public static Command MemberRename = new Command("member rename", "member <member> rename <new name>", "Renames a member");
         public static Command MemberDesc = new Command("member description", "member <member> description [description]", "Changes a member's description");
         public static Command MemberPronouns = new Command("member pronouns", "member <member> pronouns [pronouns]", "Changes a member's pronouns");
@@ -156,6 +157,8 @@ namespace PluralKit.Bot
                 return ctx.Execute<Help>(ExplainIntroject, m => m.ExplainIntroject(ctx));
 			if (ctx.Match("explainbot"))
                 return ctx.Execute<Help>(ExplainBot, m => m.ExplainBot(ctx));
+			if (ctx.Match("new", "proxyhelp"))
+                return ctx.Execute<GetStarted>(ProxyHelp, m => m.ProxyHelp(ctx));
 			if (ctx.Match("did"))
 				return ctx.Execute<Help>(ExplainDID, m => m.ExplainDID(ctx));
 			if (ctx.Match("terms"))
