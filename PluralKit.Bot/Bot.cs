@@ -56,7 +56,7 @@ namespace PluralKit.Bot
         public void Init()
         {
             // Attach the handlers we need
-            _client.DebugLogger.LogMessageReceived += FrameworkLog;
+            
             
             // HandleEvent takes a type parameter, automatically inferred by the event type
             // It will then look up an IEventHandler<TypeOfEvent> in the DI container and call that object's handler method
@@ -208,24 +208,6 @@ namespace PluralKit.Bot
                     await Task.WhenAll(_client.ShardClients.Values.Select(UpdateStatus));
             }
             catch (WebSocketException) { }
-        }
-        
-        public void FrameworkLog(object sender, DebugLogMessageEventArgs args)
-        {
-            // Bridge D#+ logging to Serilog
-            LogEventLevel level = LogEventLevel.Verbose;
-            if (args.Level == LogLevel.Critical)
-                level = LogEventLevel.Fatal;
-            else if (args.Level == LogLevel.Debug)
-                level = LogEventLevel.Debug;
-            else if (args.Level == LogLevel.Error)
-                level = LogEventLevel.Error;
-            else if (args.Level == LogLevel.Info)
-                level = LogEventLevel.Information;
-            else if (args.Level == LogLevel.Warning)
-                level = LogEventLevel.Warning;
-
-            _logger.Write(level, args.Exception, "D#+ {Source}: {Message}", args.Application, args.Message);
         }
     }
 }
