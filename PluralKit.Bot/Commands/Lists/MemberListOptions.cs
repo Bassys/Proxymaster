@@ -15,7 +15,6 @@ namespace PluralKit.Bot
         public SortProperty SortProperty { get; set; } = SortProperty.Name;
         public bool Reverse { get; set; }
 
-        public PrivacyLevel? PrivacyFilter { get; set; } = PrivacyLevel.Public;
         public GroupId? GroupFilter { get; set; }
         public string? Search { get; set; }
         public bool SearchDescription { get; set; }
@@ -51,21 +50,12 @@ namespace PluralKit.Bot
                 if (SearchDescription) str.Append(" (including description)");
             }
 
-            str.Append(PrivacyFilter switch
-            {
-                null => ", showing all members",
-                PrivacyLevel.Private => ", showing only private members",
-                PrivacyLevel.Public => "", // (default, no extra line needed)
-                _ => new ArgumentOutOfRangeException($"Couldn't find readable string for privacy filter {PrivacyFilter}")
-            });
-
             return str.ToString();
         }
 
         public DatabaseViewsExt.MemberListQueryOptions ToQueryOptions() =>
             new DatabaseViewsExt.MemberListQueryOptions
             {
-                PrivacyFilter = PrivacyFilter, 
                 GroupFilter = GroupFilter,
                 Search = Search,
                 SearchDescription = SearchDescription
