@@ -19,6 +19,10 @@ namespace PluralKit.Bot
         public static Command SystemTag = new Command("system tag", "system tag [tag]", "Changes your system's tag");
         public static Command SystemAvatar = new Command("system icon", "system icon [url|@mention]", "Changes your system's icon");
         public static Command SystemDelete = new Command("system delete", "system delete", "Deletes your system");
+		public static Command Boo = new Command("boo", "scary", "Scares the bot");
+		public static Command Test = new Command("test", "debug", "Just a test message");
+		public static Command Hello = new Command("Hello", "Hi", "Greets the bot");
+		public static Command ILoveYou = new Command("I love you", "ILY", "Tells the bot you love it");
         public static Command SystemTimezone = new Command("system timezone", "system timezone [timezone]", "Changes your system's time zone");
         public static Command SystemProxy = new Command("system proxy", "system proxy [on|off]", "Enables or disables message proxying in a specific server");
         public static Command SystemList = new Command("system list", "system [system] list [full]", "Lists a system's members");
@@ -194,6 +198,14 @@ namespace PluralKit.Bot
                 return ctx.Execute<Misc>(PermCheck, m => m.PermCheckGuild(ctx));
 			if(ctx.Match("thankyou"))
 				return ctx.Execute<Responses>(ThankYou, m => m.ThankYou(ctx));
+			if(ctx.Match("iloveyou", "ily"))
+				return ctx.Execute<Responses>(ILoveYou, m => m.ILoveYou(ctx));
+			if(ctx.Match("hello", "hi"))
+				return ctx.Execute<Responses>(Hello, m => m.Hello(ctx));
+			if(ctx.Match("boo"))
+				return ctx.Execute<Responses>(Boo, m => m.Boo(ctx));
+			if(ctx.Match("test"))
+				return ctx.Execute<Responses>(Test, m => m.Test(ctx));
             if (ctx.Match("random", "r"))
                 return ctx.Execute<Member>(MemberRandom, m => m.MemberRandom(ctx));
 
