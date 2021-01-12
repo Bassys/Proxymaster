@@ -8,7 +8,7 @@ namespace PluralKit.Core {
         public static readonly int MaxMemberCount = 100000;
         public static int MaxMembersWarnThreshold (int memberLimit) => memberLimit - 50;
         public static readonly int MaxGroupCount = 5000;
-        public static readonly int MaxDescriptionLength = 2000;
+        public static readonly int MaxDescriptionLength = 1024;
         public static readonly int MaxMemberNameLength = 100; // Fair bit larger than MaxProxyNameLength for bookkeeping
         public static readonly int MaxGroupNameLength = 100;
         public static readonly int MaxPronounsLength = 100;
