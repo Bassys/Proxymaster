@@ -12,7 +12,7 @@ info:
 
     # Authentication
     Authentication is handled using a "system token". At the moment, the only way
-    to obtain a system token is to use the `pk;token` command through the Discord bot.
+    to obtain a system token is to use the `pm!token` command through the Discord bot.
 
     This will generate an opaque string you must pass as the `Authorization` header to API requests.
     Many API endpoints are available anonymously, but most of them will hide information from 
@@ -850,4 +850,4 @@ components:
       type: apiKey
       in: header
       name: Authorization
-      description: A system token obtained from the `pk;proxy` command in the Discord bot.
+      description: A system token obtained from the `pm!proxy` command in the Discord bot.

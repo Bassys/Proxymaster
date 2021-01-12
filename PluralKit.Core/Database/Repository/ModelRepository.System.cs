@@ -56,7 +56,7 @@ namespace PluralKit.Core
         public async Task AddAccount(IPKConnection conn, SystemId system, ulong accountId)
         {
             // We have "on conflict do nothing" since linking an account when it's already linked to the same system is idempotent
-            // This is used in import/export, although the pk;link command checks for this case beforehand
+            // This is used in import/export, although the pm!link command checks for this case beforehand
             await conn.ExecuteAsync("insert into accounts (uid, system) values (@Id, @SystemId) on conflict do nothing",
                 new {Id = accountId, SystemId = system});
             _logger.Information("Linked account {UserId} to {SystemId}", accountId, system);
