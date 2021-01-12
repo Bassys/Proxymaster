@@ -152,19 +152,19 @@ namespace PluralKit.Bot
                     return ctx.Reply("For a list of Proxymasters commands click here! https://proxymaster.carrd.co/#commands");
                 else return ctx.Execute<Help>(Help, m => m.HelpRoot(ctx));
             if (ctx.Match("explain"))
-                return ctx.Execute<Help>(Explain, m => m.Explain(ctx));
+                return ctx.Execute<Explanations>(Explain, m => m.Explain(ctx));
 			if (ctx.Match("Introject"))
-                return ctx.Execute<Help>(ExplainIntroject, m => m.ExplainIntroject(ctx));
+                return ctx.Execute<Explanations>(ExplainIntroject, m => m.ExplainIntroject(ctx));
 			if (ctx.Match("explainbot"))
-                return ctx.Execute<Help>(ExplainBot, m => m.ExplainBot(ctx));
+                return ctx.Execute<Explanations>(ExplainBot, m => m.ExplainBot(ctx));
 			if (ctx.Match("new", "proxyhelp"))
                 return ctx.Execute<GetStarted>(ProxyHelp, m => m.ProxyHelp(ctx));
 			if (ctx.Match("did"))
-				return ctx.Execute<Help>(ExplainDID, m => m.ExplainDID(ctx));
+				return ctx.Execute<Explanations>(ExplainDID, m => m.ExplainDID(ctx));
 			if (ctx.Match("terms"))
-				return ctx.Execute<Help>(ExplainTerms, m => m.ExplainTerms(ctx));
+				return ctx.Execute<Explanations>(ExplainTerms, m => m.ExplainTerms(ctx));
 			if (ctx.Match("flag"))
-				return ctx.Execute<Help>(ExplainFlag, m => m.ExplainFlag(ctx));
+				return ctx.Execute<Explanations>(ExplainFlag, m => m.ExplainFlag(ctx));
             if (ctx.Match("commands"))
                 return ctx.Reply("For a list of Proxymasters commands click here! https://proxymaster.carrd.co/#commands");
             if (ctx.Match("message", "msg"))
@@ -193,7 +193,7 @@ namespace PluralKit.Bot
             if (ctx.Match("permcheck"))
                 return ctx.Execute<Misc>(PermCheck, m => m.PermCheckGuild(ctx));
 			if(ctx.Match("thankyou"))
-				return ctx.Execute<Help>(ThankYou, m => m.ThankYou(ctx));
+				return ctx.Execute<Responses>(ThankYou, m => m.ThankYou(ctx));
             if (ctx.Match("random", "r"))
                 return ctx.Execute<Member>(MemberRandom, m => m.MemberRandom(ctx));
 
