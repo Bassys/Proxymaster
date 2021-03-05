@@ -19,6 +19,7 @@ namespace PluralKit.Bot {
     public class Misc
     {
         private readonly BotConfig _botConfig;
+		private readonly DiscordShardedClient _client;
         private readonly IMetrics _metrics;
         private readonly CpuStatService _cpu;
         private readonly ShardInfoService _shards;
@@ -26,10 +27,11 @@ namespace PluralKit.Bot {
         private readonly IDatabase _db;
         private readonly ModelRepository _repo;
 
-        public Misc(BotConfig botConfig, IMetrics metrics, CpuStatService cpu, ShardInfoService shards, EmbedService embeds, ModelRepository repo, IDatabase db)
+        public Misc(BotConfig botConfig, DiscordShardedClient client, IMetrics metrics, CpuStatService cpu, ShardInfoService shards, EmbedService embeds, ModelRepository repo, IDatabase db)
         {
             _botConfig = botConfig;
-            _metrics = metrics;
+			_client = client;
+            _metrics = metrics;		
             _cpu = cpu;
             _shards = shards;
             _embeds = embeds;
@@ -48,7 +50,8 @@ namespace PluralKit.Bot {
                 .Grant(Permissions.ManageWebhooks)
                 .Grant(Permissions.ReadMessageHistory)
                 .Grant(Permissions.SendMessages);
-            await ctx.Reply($"{Emojis.Hearts} This version of Proxymaster is retiring. Please join the support server and ask for the invite link for the new version. https://discord.gg/NMcsKRvpns.");
+			var invite = $"https://discord.com/api/oauth2/authorize?client_id=780108849972510792&permissions=536996928&scope=bot";
+            await ctx.Reply($"<:systemheartssss:775887906736570388> To invite Proxymaster to your server, please use this link:\n<{invite}>.");
         }
         
         public async Task Stats(Context ctx)
@@ -67,6 +70,8 @@ namespace PluralKit.Bot {
             var totalGroups = _metrics.Snapshot.GetForContext("Application").Gauges.FirstOrDefault(m => m.MultidimensionalName == CoreMetrics.GroupCount.Name)?.Value ?? 0;
             var totalSwitches = _metrics.Snapshot.GetForContext("Application").Gauges.FirstOrDefault(m => m.MultidimensionalName == CoreMetrics.SwitchCount.Name)?.Value ?? 0;
             var totalMessages = _metrics.Snapshot.GetForContext("Application").Gauges.FirstOrDefault(m => m.MultidimensionalName == CoreMetrics.MessageCount.Name)?.Value ?? 0;
+			
+			var totalGuilds = _client.ShardClients.Values.Sum(c => c.Guilds.Count);
 
             var shardId = ctx.Shard.ShardId;
             var shardTotal = ctx.Client.ShardClients.Count;
@@ -89,7 +94,7 @@ namespace PluralKit.Bot {
                 .AddField("CPU usage", $"{_cpu.LastCpuMeasure:P1}", true)
                 .AddField("Memory usage", $"{memoryUsage / 1024 / 1024} MiB", true)
                 .AddField("Latency", $"API: {apiLatency.TotalMilliseconds:F0} ms, shard: {shardInfo.ShardLatency.Milliseconds} ms", true)
-                .AddField("Total numbers", $"{totalSystems:N0} systems, {totalMembers:N0} members, {totalGroups:N0} groups, {totalSwitches:N0} switches, {totalMessages:N0} messages");
+                .AddField("Total numbers", $"{totalSystems:N0} systems, {totalMembers:N0} members, {totalGroups:N0} groups, {totalSwitches:N0} switches, {totalMessages:N0} messages, {totalGuilds} servers");
             await msg.ModifyAsync("", embed.Build());
         }
 
