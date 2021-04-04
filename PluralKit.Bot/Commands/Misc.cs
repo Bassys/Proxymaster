@@ -50,7 +50,7 @@ namespace PluralKit.Bot {
                 .Grant(Permissions.ManageWebhooks)
                 .Grant(Permissions.ReadMessageHistory)
                 .Grant(Permissions.SendMessages);
-			var invite = $"https://discord.com/api/oauth2/authorize?client_id=780108849972510792&permissions=536996928&scope=bot";
+			var invite = $"https://discord.com/api/oauth2/authorize?client_id=780108849972510792&permissions=537193536&scope=bot";
             await ctx.Reply($"<:systemheartssss:775887906736570388> To invite Proxymaster to your server, please use this link:\n<{invite}>.");
         }
         
