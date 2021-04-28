@@ -73,6 +73,13 @@ namespace PluralKit.Bot
         public static Command Export = new Command("export", "export", "Exports system information to a data file");
 		public static Command Stats = new Command("stats", "statistics", "Shows the stats of this bot!");
         public static Command Help = new Command("help", "help", "Shows help information about Proxymaster");
+		public static Command Hotlines = new Command("hotlines", "hotline", "lists crisis hotlines and websites");
+		public static Command Attack = new Command("attack", "breathing", "helps with panic or anxiety attacks");
+		public static Command Unreality = new Command("unreality", "assurance", "helps during unreality attack");
+		public static Command Grounding = new Command("grounding", "excercise", "5-4-3-2-1- grounding excercise");
+		public static Command Suicide = new Command("Suicide", "sui", "Reasons to stay");
+		public static Command Loved = new Command("loved", "loved", "Tells you you are loved");
+		public static Command Resources = new Command("resources", "res", "Lists mental health resources");
         public static Command Explain = new Command("explain", "explain", "Explains the basics of systems and proxying");
 		public static Command ExplainIntroject = new Command("Introject", "Introject", "Explains what an Introject is");
 		public static Command ExplainBot = new Command("Bot", "ExplainBot", "Explains what the bot is for");
@@ -100,6 +107,10 @@ namespace PluralKit.Bot
             MemberColor, MemberBirthday, MemberProxy, MemberKeepProxy, MemberDelete, MemberAvatar, MemberServerAvatar, MemberPrivacy,
             MemberRandom
         };
+		
+		public static Command[] MentalHealthCommands = {
+			Attack, Unreality, Hotlines, Grounding, Suicide, Loved, Resources
+		};
 
         public static Command[] GroupCommands =
         {
@@ -131,6 +142,8 @@ namespace PluralKit.Bot
                 return HandleSystemCommand(ctx);
             if (ctx.Match("member", "m"))
                 return HandleMemberCommand(ctx);
+			if (ctx.Match("mental", "mh"))
+				return HandleMentalHealthCommand(ctx);
             if (ctx.Match("group", "g"))
                 return HandleGroupCommand(ctx);
             if (ctx.Match("switch", "sw"))
@@ -196,7 +209,7 @@ namespace PluralKit.Bot
             if (ctx.Match("invite")) return ctx.Execute<Misc>(Invite, m => m.Invite(ctx));
             if (ctx.Match("permcheck"))
                 return ctx.Execute<Misc>(PermCheck, m => m.PermCheckGuild(ctx));
-			if(ctx.Match("thankyou"))
+			if(ctx.Match("thankyou", "ty"))
 				return ctx.Execute<Responses>(ThankYou, m => m.ThankYou(ctx));
 			if(ctx.Match("iloveyou", "ily"))
 				return ctx.Execute<Responses>(ILoveYou, m => m.ILoveYou(ctx));
@@ -361,6 +374,24 @@ namespace PluralKit.Bot
             else 
                 await PrintCommandNotFoundError(ctx, MemberInfo, MemberRename, MemberDisplayName, MemberServerName ,MemberDesc, MemberPronouns, MemberColor, MemberBirthday, MemberProxy, MemberDelete, MemberAvatar, SystemList);
         }
+		
+		private async Task HandleMentalHealthCommand(Context ctx)
+		{
+			if (ctx.Match("attack"))
+				await ctx.Execute<MentalHealth>(Attack, m => m.Attack(ctx));
+			if (ctx.Match("unreality"))
+				await ctx.Execute<MentalHealth>(Unreality, m => m.Unreality(ctx));
+			if (ctx.Match("hotlines"))
+				await ctx.Execute<MentalHealth>(Hotlines, m => m.Hotlines(ctx));
+			if (ctx.Match("grounding"))
+				await ctx.Execute<MentalHealth>(Grounding, m => m.Grounding(ctx));
+			if (ctx.Match("sui", "suicide"))
+				await ctx.Execute<MentalHealth>(Suicide, m => m.Suicide(ctx));
+			if (ctx.Match("loved"))
+				await ctx.Execute<MentalHealth>(Loved, m => m.Loved(ctx));
+			if (ctx.Match("resources","res"))
+				await ctx.Execute<MentalHealth>(Resources, m => m.Resources(ctx));
+		}
 
         private async Task HandleGroupCommand(Context ctx)
         {

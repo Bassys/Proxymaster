@@ -37,6 +37,7 @@ namespace PluralKit.Bot
 			builder.RegisterType<GetStarted>().AsSelf();
 			builder.RegisterType<Explanations>().AsSelf();
 			builder.RegisterType<Responses>().AsSelf();
+			builder.RegisterType<MentalHealth>().AsSelf();
             builder.RegisterType<ImportExport>().AsSelf();
             builder.RegisterType<Member>().AsSelf();
             builder.RegisterType<MemberAvatar>().AsSelf();
