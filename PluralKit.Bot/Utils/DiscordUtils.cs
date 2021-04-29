@@ -22,6 +22,7 @@ namespace PluralKit.Bot
     {
         public static DiscordColor Blue = new DiscordColor(0x1f99d8);
         public static DiscordColor Green = new DiscordColor(0x00cc78);
+		public static DiscordColor Pink = new DiscordColor(0xe26ec6);
         public static DiscordColor Red = new DiscordColor(0xef4b3d);
         public static DiscordColor Gray = new DiscordColor(0x979c9f);
 
