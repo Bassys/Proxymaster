@@ -224,6 +224,42 @@ namespace PluralKit.Bot
             else
                 await ShowIcon();
         }
+		
+		public async Task GroupTag(Context ctx, PKGroup target)
+        {
+			if (await ctx.MatchClear("this group's tag"))
+            {
+                ctx.CheckOwnGroup(target);
+                
+                var patch = new GroupPatch {Tag = Partial<string>.Null()};
+                await _db.Execute(conn => _repo.UpdateGroup(conn, target.Id, patch));
+
+                await ctx.Reply($"{Emojis.Success} Group tag cleared.");
+            }
+            else if (!ctx.HasNext())
+            {
+                // No perms check, tag isn't covered by member privacy 
+                var eb = new DiscordEmbedBuilder()
+                    .AddField("Name", target.Name)
+                    .AddField("Tag", target.Tag ?? "*(none)*");
+                
+                if (ctx.System?.Id == target.System)
+                    eb.WithDescription($"To change tag, type `pm!group {target.Reference()} tag <tag>`.\nTo clear it, type `pm!group {target.Reference()} tag -clear`.");
+                
+                await ctx.Reply(embed: eb.Build());
+            }
+            else
+            {
+                ctx.CheckOwnGroup(target);
+                
+                var newTag = ctx.RemainderOrNull();
+                
+                var patch = new GroupPatch {Tag = Partial<string>.Present(newTag)};
+                await _db.Execute(conn => _repo.UpdateGroup(conn, target.Id, patch));
+
+                await ctx.Reply($"{Emojis.Success} Group tag changed.");
+            }
+        }
 
         public async Task ListSystemGroups(Context ctx, PKSystem system)
         {
@@ -296,6 +332,9 @@ namespace PluralKit.Bot
 
             if (target.DisplayName != null)
                 eb.AddField("Display Name", target.DisplayName);
+				
+			if (target.Tag != null)
+                eb.AddField("Tag", target.Tag);
 
             if (target.ListPrivacy.CanAccess(pctx))
             {

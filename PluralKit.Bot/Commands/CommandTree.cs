@@ -59,6 +59,7 @@ namespace PluralKit.Bot
         public static Command GroupDisplayName = new Command("group displayname", "group <group> displayname [display name]", "Changes a group's display name");
         public static Command GroupDesc = new Command("group description", "group <group> description [description]", "Changes a group's description");
         public static Command GroupAdd = new Command("group add", "group <group> add <member> [member 2] [member 3...]", "Adds one or more members to a group");
+		public static Command GroupTag = new Command("group tag", "tag", "adds a group tag");
         public static Command GroupRemove = new Command("group remove", "group <group> remove <member> [member 2] [member 3...]", "Removes one or more members from a group");
         public static Command GroupPrivacy = new Command("group privacy", "group <group> privacy <description|icon|visibility|all> <public|private>", "Changes a group's privacy settings");
         public static Command GroupIcon = new Command("group icon", "group <group> icon [url|@mention]", "Changes a group's icon");
@@ -115,13 +116,13 @@ namespace PluralKit.Bot
         public static Command[] GroupCommands =
         {
             GroupInfo, GroupList, GroupNew, GroupAdd, GroupRemove, GroupMemberList, GroupRename, GroupDesc,
-            GroupIcon, GroupPrivacy, GroupDelete
+            GroupIcon, GroupPrivacy, GroupDelete, GroupTag
         };
 
         public static Command[] GroupCommandsTargeted =
         {
             GroupInfo, GroupAdd, GroupRemove, GroupMemberList, GroupRename, GroupDesc, GroupIcon, GroupPrivacy,
-            GroupDelete
+            GroupDelete, GroupTag
         };
 
         public static Command[] SwitchCommands = {Switch, SwitchOut, SwitchMove, SwitchDelete};
@@ -407,6 +408,8 @@ namespace PluralKit.Bot
                 // Commands with group argument
                 if (ctx.Match("rename", "name", "changename", "setname"))
                     await ctx.Execute<Groups>(GroupRename, g => g.RenameGroup(ctx, target));
+				if (ctx.Match("tag"))
+					await ctx.Execute<Groups>(GroupTag, g => g.GroupTag(ctx, target)); 
                 else if (ctx.Match("nick", "dn", "displayname", "nickname"))
                     await ctx.Execute<Groups>(GroupDisplayName, g => g.GroupDisplayName(ctx, target));
                 else if (ctx.Match("description", "info", "bio", "text", "desc"))
