@@ -46,11 +46,10 @@ namespace PluralKit.Bot
                     catch (InvalidOperationException)
                     {
                         // Invalid URL throws this, we just error back out
-                        throw Errors.InvalidImportFile;
+                        throw;
                     }
 
-                    if (!response.IsSuccessStatusCode) 
-                        throw Errors.InvalidImportFile;
+                    
 
                     DataFileSystem data;
                     try
@@ -60,12 +59,10 @@ namespace PluralKit.Bot
                     }
                     catch (JsonException)
                     {
-                        throw Errors.InvalidImportFile;
+                       throw;
                     }
 
-                    if (!data.Valid) 
-                        throw Errors.InvalidImportFile;
-
+                    
                     if (data.LinkedAccounts != null && !data.LinkedAccounts.Contains(ctx.Author.Id))
                     {
                         var msg = $"{Emojis.Warn} You seem to importing a system profile belonging to another account. Are you sure you want to proceed?";
