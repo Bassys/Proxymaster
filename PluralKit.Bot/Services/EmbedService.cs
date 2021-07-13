@@ -36,13 +36,24 @@ namespace PluralKit.Bot {
 
             var memberCount = cctx.MatchPrivateFlag(ctx) ? await _repo.GetSystemMemberCount(conn, system.Id, PrivacyLevel.Public) : await _repo.GetSystemMemberCount(conn, system.Id);
 
+            DiscordColor color;
+            try
+            {
+                color = system.Color?.ToDiscordColor() ?? DiscordUtils.Gray;
+            }
+            catch (ArgumentException)
+            {
+                // There's no API for system colors yet, but defaulting to a blank color in advance can't be a bad idea
+                color = DiscordUtils.Gray;
+            }
+
             var eb = new DiscordEmbedBuilder()
-                .WithColor(DiscordUtils.Gray)
                 .WithTitle(system.Name ?? null)
                 .WithThumbnail(system.AvatarUrl)
-                .WithFooter($"System ID: {system.Hid} | Created on {system.Created.FormatZoned(system)}");
- 
-            var latestSwitch = await _repo.GetLatestSwitch(conn, system.Id);
+                .WithFooter($"System ID: {system.Hid} | Created on {system.Created.FormatZoned(system)}")
+                .WithColor(color);
+
+			var latestSwitch = await _repo.GetLatestSwitch(conn, system.Id);
             if (latestSwitch != null && system.FrontPrivacy.CanAccess(ctx))
             {
                 var switchMembers = await _repo.GetSwitchMembers(conn, latestSwitch.Id).ToListAsync();
@@ -53,6 +64,10 @@ namespace PluralKit.Bot {
 
             if (system.Tag != null) eb.AddField("Tag", system.Tag.EscapeMarkdown());
             eb.AddField("Linked accounts", string.Join(", ", users).Truncate(1000), true);
+
+            if (!system.Color.EmptyOrNull()) eb.AddField("Color", $"#{system.Color}", true);
+
+            eb.AddField("Linked accounts", string.Join("\n", users).Truncate(1000), true);
 
             if (system.MemberListPrivacy.CanAccess(ctx))
             {

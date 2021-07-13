@@ -17,6 +17,7 @@ namespace PluralKit.Bot
         public static Command SystemRename = new Command("system name", "system rename [name]", "Renames your system");
         public static Command SystemDesc = new Command("system description", "system description [description]", "Changes your system's description");
         public static Command SystemTag = new Command("system tag", "system tag [tag]", "Changes your system's tag");
+		public static Command SystemColor = new Command("system color", "system colour]", "changes system color");
         public static Command SystemAvatar = new Command("system icon", "system icon [url|@mention]", "Changes your system's icon");
         public static Command SystemDelete = new Command("system delete", "system delete", "Deletes your system");
 		public static Command Boo = new Command("boo", "scary", "Scares the bot");
@@ -99,7 +100,7 @@ namespace PluralKit.Bot
         public static Command PermCheck = new Command("permcheck", "permcheck <guild>", "Checks whether a server's permission setup is correct");
 
         public static Command[] SystemCommands = {
-            SystemInfo, SystemNew, SystemRename, SystemTag, SystemDesc, SystemAvatar, SystemDelete, SystemTimezone,
+            SystemInfo, SystemNew, SystemRename, SystemTag, SystemDesc, SystemColor, SystemAvatar, SystemDelete, SystemTimezone,
             SystemList, SystemFronter, SystemFrontHistory, SystemFrontPercent, SystemPrivacy, SystemProxy
         };
 
@@ -241,6 +242,8 @@ namespace PluralKit.Bot
                 await ctx.Execute<SystemEdit>(SystemRename, m => m.Name(ctx));
             else if (ctx.Match("tag"))
                 await ctx.Execute<SystemEdit>(SystemTag, m => m.Tag(ctx));
+			else if (ctx.Match("color", "colour"))
+                await ctx.Execute<SystemEdit>(SystemColor, m => m.Color(ctx));
             else if (ctx.Match("description", "desc", "bio"))
                 await ctx.Execute<SystemEdit>(SystemDesc, m => m.Description(ctx));
             else if (ctx.Match("avatar", "picture", "icon", "image", "pic", "pfp"))

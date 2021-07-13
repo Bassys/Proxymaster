@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Dapper;
@@ -318,6 +319,42 @@ namespace PluralKit.Bot
                 await SetAll(ctx.PopPrivacyLevel());
             else
                 await SetLevel(ctx.PopSystemPrivacySubject(), ctx.PopPrivacyLevel());
+        }
+		
+		public async Task Color(Context ctx) {
+            ctx.CheckSystem();
+
+            if (await ctx.MatchClear())
+            {
+                var patch = new SystemPatch {Color = Partial<string>.Null()};
+                await _db.Execute(conn => _repo.UpdateSystem(conn, ctx.System.Id, patch));
+
+                await ctx.Reply($"{Emojis.Success} System colour cleared!");
+            }
+            else if (!ctx.HasNext()) 
+            {
+                if (ctx.System.Color == null) 
+                    await ctx.Reply(
+                            $"You currently do not have a colour set for your system. To set one type pm!s color [color]!");
+                else
+                    await ctx.Reply($"{Emojis.Success} Your system's color is now **#{ctx.System.Color}**! You can clear it with pm!s color -clear.");
+            }
+            else
+            {
+                var color = ctx.RemainderOrNull();
+
+                if (color.StartsWith("#")) color = color.Substring(1);
+				if (!Regex.IsMatch(color, "^[0-9a-fA-F]{6}$")) throw Errors.InvalidColorError(color);
+
+                var patch = new SystemPatch {Color = Partial<string>.Present(color.ToLowerInvariant())};
+                await _db.Execute(conn => _repo.UpdateSystem(conn, ctx.System.Id, patch));
+
+                await ctx.Reply(embed: new DiscordEmbedBuilder()
+                    .WithTitle($"{Emojis.Success} System color changed.")
+                    .WithColor(color.ToDiscordColor().Value)
+                    .WithThumbnail($"https://fakeimg.pl/256x256/{color}/?text=%20")
+                    .Build());
+            }
         }
 
         public async Task SystemPing(Context ctx) 

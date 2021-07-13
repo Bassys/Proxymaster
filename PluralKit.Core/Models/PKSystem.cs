@@ -15,6 +15,7 @@ namespace PluralKit.Core {
         public string Tag { get; }
         public string AvatarUrl { get; }
         public string Token { get; }
+		public string Color { get; }
         public Instant Created { get; }
         public string UiTz { get; set; }
         public bool PingsEnabled { get; }
